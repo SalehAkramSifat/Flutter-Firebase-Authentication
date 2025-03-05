@@ -32,7 +32,7 @@ class AuthSetup {
     try {
       await _auth.signOut();
     } catch (e) {
-      log("Something went wrong");
+      log('Something went wrong');
     }
   }
 }
