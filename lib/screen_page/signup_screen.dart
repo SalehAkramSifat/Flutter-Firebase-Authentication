@@ -32,34 +32,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   // SignUpScreen.dart (After Registering User)
-  _signup() async {
-    if (_emailOrPhone.text.trim().isEmpty || _password.text.trim().isEmpty) {
+  _signup()async{
+    if(_emailOrPhone.text.isEmpty || _password.text.isEmpty){
       return;
     }
-
-    try {
-      final user = await _auth.createUserWithEmailAndPassword(
-          _emailOrPhone.text.trim(), _password.text.trim());
-
-      if (user == null) {
+    try{
+      final user = await _auth.createUserWithEmailAndPassword(_emailOrPhone.text.trim(), _password.text.trim());
+      if(user == null){
         return;
       }
-
-      // Send verification email
       await user.sendEmailVerification();
 
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Verification email sent. Please check your inbox.")));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Verification email sent. Please check your inbox.")));
 
-      // Redirect to Login Screen after successful registration
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => LoginScreen()),
-      );
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> LoginScreen()));
+    }catch (e){
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Error: ${e.toString()}")));
 
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Error: ${e.toString()}")));
     }
   }
 
@@ -69,7 +58,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
-        child: SingleChildScrollView( // স্ক্রলভিউ যুক্ত করা হলো
+        child: SingleChildScrollView(
           padding: EdgeInsets.all(20.0),
           child: Form(
             key: _formKey,
@@ -85,7 +74,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   controller: _emailOrPhone,
                   keyboardType: _isPhoneNumber(_emailOrPhone.text)
                       ? TextInputType.phone
-                      : TextInputType.emailAddress, // ইনপুট টাইপ ডায়নামিক
+                      : TextInputType.emailAddress,
                   decoration: InputDecoration(
                     labelText: 'Email or Phone (017XXXXXXXX)',
                     border: OutlineInputBorder(),
@@ -135,7 +124,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
-                    onPressed: _isLoading ? null : _signup, // লোডিং হলে ডিজেবল
+                    onPressed: _isLoading ? null : _signup,
                     style: ElevatedButton.styleFrom(
                       padding: EdgeInsets.symmetric(vertical: 12),
                       backgroundColor: Colors.blueAccent,
